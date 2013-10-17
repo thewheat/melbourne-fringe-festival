@@ -13,3 +13,4 @@ Offline capable webapp that lets me search the events in a way that was more int
 * Copy downloader/source/pages/data_list.js to to webapp/test/
 
 [http://thewheatfield.org/mff/](http://thewheatfield.org/mff/)
+[Blog post](http://blog.thewheatfield.org/2013/10/16/melbourne-fringe-festival-unofficial-offline-guide/)
