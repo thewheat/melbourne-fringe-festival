@@ -1,0 +1,56 @@
+  .label{
+    margin-top: 1em;
+  }
+  .label.line{
+    display: inline;
+  }
+  .data{
+    margin: 0.5em;
+  }
+  .list.panel {
+    padding: 0;
+  }
+  .list .header{
+    padding: 0.2em 0.2em 0.6em 0.2em;
+    border-bottom: 1px solid #ddd;
+  }
+  .list .body{
+    padding: 0.2em;
+  }
+  .list-header-corner{
+  	text-align: right;
+  }
+  .list-sidebar-padding{
+  	margin-top: 0.5em;
+  }
+  .list .title{
+    padding: 10px 0px;
+  }
+  .list .category{
+    font-weight: bold;
+    padding: 10px;
+  }
+
+	.list-info.limited{
+		max-height: 200px; 
+    overflow: hidden;
+	}
+  #search-form .hide{
+    display: none;
+  }
+  .inline{
+  	display: inline;
+  }
+
+  .panel{
+    padding: 0.1em;
+  }
+  .panel.sidebar{
+    padding: 0.2em;
+    border: 0px;
+    border-left: 1px solid #ddd;
+    padding-left: 1em;
+  }
+  .list.columns{
+    padding: 0.1em;
+  }

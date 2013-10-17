@@ -1,0 +1,159 @@
+<!DOCTYPE html  manifest="manifest.php">
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang="en"  manifest="manifest.php"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"        lang="en"  manifest="manifest.php"> <!--<![endif]-->
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+    <!-- ios webapp - hide safari toolbar -->
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+
+
+  <title>Melbourne Fringe Festival 2013 - Unofficial Offline Guide</title>
+  
+  <link rel="stylesheet" href="css/foundation.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  
+  <script src="js/vendor/custom.modernizr.js"></script>
+
+
+</head>
+<body>
+  	<h3>Melbourne Fringe Festival 2013 - Unofficial Offline Guide</h3>
+    <div>
+    	<form id='search-form'>
+    		<input type="checkbox" name='today' id='today' class='inline' checked><label for="today" class='inline'>Today</label>
+    		<input type="checkbox" name='price-free' id='price-free' class='inline'><label for="price-free" class='inline'>Free</label>
+    		<input type="text" name='name' placeholder="name" class='advance hide'>
+    		<input type="text" name='venue' placeholder="venue name" class='advance hide'>
+    		<br>
+    		<label for="category" class='inline'>Category</label>
+    		<select type="text" name='category' id='category' placeholder="category" class='inline' style='width: 70%;'>
+    			<option value=''>--All--</option>
+				<option>Cabaret</option>
+				<option>Circus</option>
+				<option>Comedy</option>
+				<option>Dance</option>
+				<option>Kids</option>
+				<option>Live Art</option>
+				<option>Music</option>
+				<option>Performance</option>
+				<option>Special Events</option>
+				<option>Visual Arts</option>    			
+    		</select>
+    		<input type="text" name='date-start' placeholder="date (e.g. 30 for Sept 30th, 5 for Oct 5th)" value="" class='advance hide'>
+    		<input type="text" name='date-end' placeholder="date range end" value="" style='display: none'>
+    		<input type="text" name='price' placeholder="max full price in $ (e.g. 0 for free, 20 for full price of $20)" class='advance hide'>
+    		<BR>
+    		<button id='search-button'>Search</button>
+    		&nbsp;<span id='search-results' style='display:none'><span id='search-results-number'></span> results</span>
+    		&nbsp;(<span id='status'></span>)
+    		<br><a href="#" class='toggleSearch'>Toggle Advance Search</a>
+    	</form>
+    	
+    </div>
+    <div id="list">
+
+	</div>
+
+   	
+	<div id="list-template" style='display:none'>
+			{{#each items}}
+			<div class="panel list item">
+			  <div class="row header">
+			    <div class="small-6 columns">
+					<h4><a href="{{{link}}}" class='title'>{{{name}}}</a></h4>
+					<h6 class='subtitle'>{{{description}}}</h6>
+					<div class='venue'>
+						{{{venue.name}}}
+					</div>
+			    </div>
+			    <div class="small-6 columns list-header-corner">
+					<div  class='category'>{{{category}}}</div>
+			    	<a href="{{image}}" class='image'><img class='image' src="{{image}}"></a>
+			    </div>
+		    </div>
+			  <div class="row body">
+			    <div class="small-7 columns info">
+					<div class='list-info limited'>{{{info}}}
+					</div>
+					<a href="#" class='toggleInfo'>Toggle Info</a>
+					
+			    </div>
+			    <div class="small-5 columns panel sidebar">
+					<div class="list-sidebar-padding time">
+						{{{time}}}
+					</div>					
+					<div class="list-sidebar-padding dates">
+						Dates: <br>
+						{{{showDates dates.active}}}
+						{{#if dates.cancelled}}
+							Cancelled: {{{showDates dates.cancelled}}}
+						{{/if}}
+						{{#if dates.sold_out}}
+							Sold out: {{{showDates dates.sold_out}}}
+						{{/if}}
+			    	</div>
+					<div class="list-sidebar-padding price">
+						{{{tickets}}}
+					</div>
+					<div class="list-sidebar-padding venue details">
+						{{{venue.name}}}<br>
+						{{{venue.address}}}<br>
+						{{{venue.facilities}}}<br>
+						<a href='{{{venue.map_link}}}' class='link'>Map</a>
+					</div>
+			    </div>
+			  </div>
+			</div>
+			{{/each}}		
+	</div>
+
+  
+  <script src="js/vendor/zepto.js"></script>
+  <script src="js/foundation.min.js"></script>
+  <script src="js/handlebars.js"></script>
+  <script src="js/app.js"></script>
+  <script src="test/data_list.js"></script>
+
+  
+  <script>
+  	var data_time = null;
+    $(document).foundation();
+    $(document).ready(function(){
+    	// load_list(data_list);	
+
+    	$(".toggleSearch").click(function(e){
+	    	e.preventDefault();
+	    	$("#search-form .advance").toggleClass("hide");
+	    });
+	    $("#search-button").click(function(e){
+	    	e.preventDefault();
+	    	data_time = (new Date()).getTime();
+            $("#status").text('Searching ' + data_list.length + " events");	    	
+	    	$("#search-results").hide();
+	    	var searchInputs = $("#search-form").serializeArray();
+	    	search(searchInputs, 0, data_time);
+	    });
+		$(document).on( "click", ".toggleInfo", function(e) {
+	    	e.preventDefault();
+	    	$(this).prev(".list-info").toggleClass("limited");
+		});
+
+	    $("#status").text("Loaded " + (data_list.length) + " events");
+        window.applicationCache.addEventListener('updateready', function(e) {
+                                                if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
+                                                        // Browser downloaded a new app cache.
+                                                        // Swap it in and reload the page to get the new hotness.
+                                                        window.applicationCache.swapCache();
+                                                        if (confirm('A new version of this site is available. Load it?')) {
+                                                                window.location.reload();
+                                                        }
+                                                } else {
+                                                        // Manifest didn't changed. Nothing new to server.
+                                                }
+                                        }, false);    });
+  </script>
+</body>
+</html>
